@@ -4,6 +4,7 @@ const peerId = require('peer-id')
 const waterfall = require('async/waterfall')
 const parallel = require('async/parallel')
 const isNode = require('detect-node')
+const webrtcSupport = require('webrtcsupport')
 
 const addDefaultAssets = require('./init-assets')
 
@@ -44,6 +45,12 @@ module.exports = function init (self) {
         }
         opts.log('done')
         opts.log('peer identity: ' + config.Identity.PeerID)
+
+        if (webrtcSupport.support || isNode) {
+          config.Addresses.Swarm.push(
+            '/libp2p-webrtc-star/dns4/star-signal.cloud.ipfs.team/wss'
+          )
+        }
 
         self._repo.version.set(VERSION, cb)
       },
