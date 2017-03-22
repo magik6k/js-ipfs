@@ -22,10 +22,9 @@ function uriToMultiaddr (uri) {
   return `/ip4/${ipPort[0]}/tcp/${ipPort[1]}`
 }
 
-function HttpApi (repo) {
+function HttpApi (repo, options) {
   this.node = undefined
   this.server = undefined
-
   this.start = (callback) => {
     if (typeof repo === 'string') {
       repo = new IPFSRepo(repo, {stores: Store})
@@ -41,7 +40,8 @@ function HttpApi (repo) {
           init: false,
           start: true,
           EXPERIMENTAL: {
-            pubsub: true
+            pubsub: options && options.enablePubsubExperiment,
+            sharding: options && options.enableShardingExperiment
           }
         })
 

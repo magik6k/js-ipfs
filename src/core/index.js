@@ -97,6 +97,10 @@ class IPFS extends EventEmitter {
       this.log('EXPERIMENTAL pubsub is enabled')
     }
 
+    if (this._options.EXPERIMENTAL.sharding) {
+      this.log('EXPERIMENTAL sharding is enabled')
+    }
+
     // Boot
     series([
       (cb) => {

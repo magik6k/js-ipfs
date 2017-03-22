@@ -16,10 +16,14 @@ const isStream = require('isstream')
 
 module.exports = function files (self) {
   const createAddPullStream = (options) => {
+    const opts = Object.assign({}, {
+      shardSplitThreshold: self._options.EXPERIMENTAL.sharding ? 1000 : Infinity
+    }, options)
+
     return pull(
       pull.map(normalizeContent),
       pull.flatten(),
-      importer(self._ipldResolver, options),
+      importer(self._ipldResolver, opts),
       pull.asyncMap(prepareFile.bind(null, self))
     )
   }
